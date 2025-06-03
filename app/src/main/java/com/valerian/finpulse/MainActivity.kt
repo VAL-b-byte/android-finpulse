@@ -47,6 +47,11 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
@@ -54,6 +59,7 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.ui.graphics.Color
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.text.style.TextAlign
 
@@ -92,6 +98,10 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
    // }
 //}
 
+
+
+
+
 @Composable
 fun DisplayDrawableImage() {
     Column( modifier = Modifier.fillMaxWidth().fillMaxHeight(),horizontalAlignment = Alignment.CenterHorizontally,verticalArrangement = Arrangement.SpaceEvenly) {
@@ -100,6 +110,7 @@ fun DisplayDrawableImage() {
         contentDescription = "welcome Image")
         Text(
             text = "Welcome to FinPulse, \nWhere financial clarity and \nmental serenity thrive together",
+            textAlign = TextAlign.Center
             )
         FilledButtonExample{}
     }
@@ -518,7 +529,7 @@ fun MpesaLinkScreen() {
     }
 }
 @Composable
-@Preview(showBackground = true)
+@Preview(showBackground = true,showSystemUi = true)
 fun PreviewMpesaLinkScreen() {
     MpesaLinkScreen()
 }
@@ -576,7 +587,7 @@ fun SuccessPopup() {
 }
 
 
-@Preview(showBackground = true)
+@Preview(showBackground = true,showSystemUi = true)
 @Composable
 fun SuccessPopupPreview() {
     SuccessPopup()
@@ -636,9 +647,263 @@ fun LinkBankAccountScreen() {
 
     }
 }
-@Preview(showBackground = true)
+@Preview(showBackground = true,showSystemUi = true)
 @Composable
 fun LinkBankAccountScreenPreview() {
     LinkBankAccountScreen()
 }
+@Composable
+fun SuccessPopup2() {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+            .background(Color.White, shape = RoundedCornerShape(12.dp)),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = "Success!",
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color(0xFFFFD700), // Gold color
+            modifier = Modifier.padding(top = 16.dp)
+        )
 
+        Text(
+            text = "Your Bank Account Has been linked",
+            fontSize = 18.sp,
+            color = Color.Black,
+            modifier = Modifier.padding(vertical = 8.dp)
+        )
+
+        Button(
+            onClick = { /* Navigate to dashboard */ },
+            modifier = Modifier
+                .padding(16.dp),colors = ButtonDefaults.buttonColors(containerColor = Color.Black)
+
+        ) {
+            Text(
+                text = "Proceed",
+                fontSize = 16.sp,
+                color = Color(0xFFFFD700) // Gold color
+            )
+        }
+    }
+}
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun PreviewSuccessPopup2() {
+    SuccessPopup2()
+}
+
+@Composable
+fun MoodTrackerScreen() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = "How are you feeling Today?",
+            fontSize = 18.sp,
+            color = Color.Black,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(bottom = 16.dp)
+        )
+
+        Text(
+            text = "Mood Selector",
+            fontSize = 16.sp,
+            color = Color.Black,
+            modifier = Modifier.padding(bottom = 16.dp)
+        )
+
+        Text(
+            text = "What's influencing your mood?",
+            fontSize = 16.sp,
+            color = Color.Black,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+
+        var inputText by remember { mutableStateOf("") }
+
+
+            OutlinedTextField(
+                value = inputText,
+                onValueChange = { inputText = it },
+                modifier = Modifier.fillMaxWidth(),
+                colors = OutlinedTextFieldDefaults.colors(
+                    unfocusedBorderColor = Color(0xFFFFD700),
+                    focusedBorderColor = Color(0xFFFFD700)
+                )
+            )
+
+
+        var selectedOption by remember { mutableStateOf("AI insight") }
+        val options = listOf("AI insight", "Option 1", "Option 2")
+
+        DropdownMenu(
+            expanded = true, // Replace this with a variable tracking state
+            onDismissRequest = {},
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            options.forEach { option ->
+                DropdownMenuItem(text = { Text(option) }, onClick = { selectedOption = option })
+            }
+        }
+
+        Button(
+            onClick = { /* Handle click */ },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color.Black,
+                contentColor = Color.White
+            ),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Log Mood")
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewMoodTrackerScreen() {
+    MoodTrackerScreen()
+}
+
+@Composable
+fun PricingScreen() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(50.dp)
+    ) {
+        Text(
+            text = "Choose Your Plan\nControl Your Finances.",
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color.Black
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+
+        PricingBox(title = "Free", price = "Ksh 0/Month", description = "Start smart with essential tools")
+        PricingBox(title = "Standard", price = "Ksh 999/Month", description = "Grow your financial habits")
+        PricingBox(title = "Premium", price = "Ksh 1,499/Month", description = "Full access, full control")
+    }
+}
+
+@Composable
+fun PricingBox(title: String, price: String, description: String) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .border(2.dp, Color(0xFFFFD700), RoundedCornerShape(8.dp))
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(text = title, fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color.Black)
+        Text(text = price, fontSize = 14.sp, color = Color.Black)
+        Text(text = description, fontSize = 14.sp, color = Color.Black)
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PricingScreenPreview() {
+    PricingScreen()
+}
+
+@Composable
+fun FinPulseDashboard() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        // Top Section with icons
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(Icons.Default.Person, contentDescription = "User Profile")
+            Text(text = "Subscription Plans", fontSize = 16.sp)
+            Icon(Icons.Default.Notifications, contentDescription = "Notifications")
+        }
+
+        // AI Tip of the Day dropdown
+        var selectedTip by remember { mutableStateOf("AI tip of the day") }
+        DropdownMenu(selectedItem = selectedTip, options = listOf("Tip 1", "Tip 2", "Tip 3"))
+
+        // Buttons for financial details
+        FinPulseButton(text = "Account Balance")
+        FinPulseButton(text = "Linked Accounts")
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            FinPulseButton(text = "Recent Transactions")
+            Icon(Icons.Default.ArrowDropDown, contentDescription = "Expand")
+        }
+        FinPulseButton(text = "Mood Display")
+        FinPulseButton(text = "Goals")
+
+        // Spending Overview Dropdown
+        var selectedOverview by remember { mutableStateOf("Spending Overview") }
+        DropdownMenu(selectedItem = selectedOverview, options = listOf("Overview 1", "Overview 2"))
+
+        // Bottom navigation bar
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceAround,
+        ) {
+            Icon(Icons.Default.Home, contentDescription = "Home")
+           // Icon(Icons.Default.Brain, contentDescription = "Brain")
+            Icon(Icons.Default.Settings, contentDescription = "Settings")
+            //Icon(Icons.Default.Headset, contentDescription = "Support")
+        }
+    }
+}
+
+// Button Component
+@Composable
+fun FinPulseButton(text: String) {
+    Button(
+        onClick = {},
+        modifier = Modifier.fillMaxWidth(),
+        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF0066CC))
+    ) {
+        Text(text = text, color = Color.White, fontSize = 18.sp)
+    }
+}
+
+// Dropdown Menu Component
+@Composable
+fun DropdownMenu(selectedItem: String, options: List<String>) {
+    var expanded by remember { mutableStateOf(false) }
+    Box {
+        Button(
+            onClick = { expanded = !expanded },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(text = selectedItem)
+            Icon(Icons.Default.ArrowDropDown, contentDescription = "Expand")
+        }
+        DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+            options.forEach { option ->
+                DropdownMenuItem(text = { Text(option) }, onClick = {})
+            }
+        }
+    }
+}
+
+// Preview Annotation
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun FinPulseDashboardPreview() {
+    FinPulseDashboard()
+}
