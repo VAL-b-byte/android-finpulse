@@ -9,9 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import com.valerian.finpulse.ui.theme.FinPulseTheme
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -48,33 +46,57 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.AccountBox
+import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.ui.graphics.Color
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.ui.draw.clip
+
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+
+
 
 
 class MainActivity : ComponentActivity() {
@@ -82,8 +104,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            FinPulseTheme {
-                Scaffold( modifier = Modifier.fillMaxSize() ) { innerPadding ->
+
+            FinPulseTheme  {
+                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Greeting(
                         name = "Android",
                         modifier = Modifier.padding(innerPadding)
@@ -93,7 +116,27 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+class MainNavigation: ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            val navController = rememberNavController()
 
+            NavHost(navController = navController, startDestination = "splash") {
+                composable("splash") { SplashScreen(navController) }
+                composable("Signup") { SignUpScreen(navController) }
+                composable("LinkAccount") { LinkAccountsScreen(navController) }
+                composable("MpesaLink") { MpesaLinkScreen(navController) }
+                composable("SuccessPopup") { SuccessPopup(navController) }
+                composable("LinkBankAccount") { LinkBankAccountScreen (navController) }
+                composable("MoodTracker") {MoodTrackerScreen(navController) }
+                composable("SuccessPopup2") { SuccessPopup2(navController) }
+                composable("SubscriptionPlan") { SubscriptionPlansScreen(navController) }
+                composable("Dashboard") { DashboardScreen (navController) }
+            }
+        }
+    }
+}
 
 
 @Composable
@@ -114,7 +157,7 @@ fun GreetingPreview() {
 
 
 @Composable
-fun SplashScreen() {
+fun SplashScreen(navController: NavController? = null) {
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -133,7 +176,7 @@ fun SplashScreen() {
             Text("Welcome to FinPulse,  \n where financial clarity and \n mental serenity thrive together",
                 fontSize = 26.sp, color = Color.White,fontWeight = FontWeight.Bold)
             Spacer(modifier = Modifier.height(16.dp))
-            Button(onClick = {}, modifier = Modifier.fillMaxWidth()
+            Button(onClick = { navController?.navigate("Sign Up")}, modifier = Modifier.fillMaxWidth()
                     .padding(top = 16.dp), colors = ButtonDefaults.buttonColors(containerColor = Color.Black
                     )) {
                 Text("Get Started",color = Color(0xFFFFD700), fontSize = 20.sp,fontWeight = FontWeight.Bold)
@@ -145,12 +188,15 @@ fun SplashScreen() {
 @Preview(showBackground = true)
 @Composable
 fun PreviewSplashScreen() {
-    SplashScreen()
+
+    SplashScreen ( )
 }
 
 
+
+
 @Composable
-fun SignUpScreen() {
+fun SignUpScreen(navController: NavController? = null) {
             val name = remember { mutableStateOf("") }
             val email = remember { mutableStateOf("") }
             val password = remember { mutableStateOf("") }
@@ -202,7 +248,7 @@ fun SignUpScreen() {
 
                 // Button
                 Button(
-                    onClick = { /* handle sign up */ },
+                    onClick = { navController?.navigate("Link Account" )},
                     colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -249,9 +295,11 @@ fun SignUpScreen() {
         @Preview(showBackground = true, showSystemUi = true)
         @Composable
         fun SignUpScreenPreview() {
-            MaterialTheme
+            
             SignUpScreen()
         }
+
+
 
 
         @Composable
@@ -260,8 +308,8 @@ fun SignUpScreen() {
             email: String, password: String,
             onEmailChange: (String) -> Unit,
             onPasswordChange: (String) -> Unit,
-            onForgotPasswordClick: () -> Unit
-        ) {
+            onForgotPasswordClick: () -> Unit)
+        {
 
             Column (horizontalAlignment = Alignment.CenterHorizontally){
 
@@ -352,7 +400,7 @@ fun SignUpScreen() {
 
 
 
-        @Preview(showBackground = true)
+        @Preview(showBackground = true,showSystemUi = true)
         @Composable
         fun LoginScreenPreview() {
             var email by remember { mutableStateOf("") }
@@ -370,7 +418,8 @@ fun SignUpScreen() {
                     password = password,
                     onEmailChange = { email = it },
                     onPasswordChange = { password = it },
-                    onForgotPasswordClick = {}
+                    onForgotPasswordClick = {},
+
                 )
 
                 LoginFooter(
@@ -382,7 +431,7 @@ fun SignUpScreen() {
 
 
         @Composable
-        fun LinkAccountsScreen() {
+        fun LinkAccountsScreen(navController :NavController? = null) {
             var linkMpesa by remember { mutableStateOf(false) }
             var linkBank by remember { mutableStateOf(false) }
 
@@ -444,7 +493,7 @@ fun SignUpScreen() {
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Button(
-                        onClick = { /* Handle Link Now */ },
+                        onClick = {  },
                         colors = ButtonDefaults.buttonColors ( Color.Black),
                         shape = RoundedCornerShape(12.dp),
                         modifier = Modifier.weight(1f).padding(end = 8.dp)
@@ -468,11 +517,12 @@ fun SignUpScreen() {
         @Composable
         fun LinkAccountsScreenPreview() {
             MaterialTheme {
+
                 LinkAccountsScreen()
             }
         }
         @Composable
-        fun MpesaLinkScreen() {
+        fun MpesaLinkScreen(navController: NavController? = null) {
             Column( horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
                         modifier = Modifier
@@ -549,11 +599,12 @@ fun SignUpScreen() {
         @Composable
         @Preview(showBackground = true,showSystemUi = true)
         fun PreviewMpesaLinkScreen() {
+
             MpesaLinkScreen()
         }
 
         @Composable
-        fun SuccessPopup() {
+        fun SuccessPopup (navController: NavController? = null) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -594,7 +645,7 @@ fun SignUpScreen() {
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Button(
-                    onClick = {},
+                    onClick = {navController?.navigate("Link Bank Account")},
                     colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
                     modifier = Modifier
                     //  .border(12.dp, Color(0xFFFFD700), shape = RoundedCornerShape(8.dp))
@@ -608,11 +659,15 @@ fun SignUpScreen() {
         @Preview(showBackground = true,showSystemUi = true)
         @Composable
         fun SuccessPopupPreview() {
-            SuccessPopup()
+
+        SuccessPopup()
+
         }
 
+
+
         @Composable
-        fun LinkBankAccountScreen() {
+        fun LinkBankAccountScreen(navController : NavController? = null) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -650,7 +705,7 @@ fun SignUpScreen() {
                 Spacer(modifier = Modifier.height(24.dp))
 
                 Button(
-                    onClick = { /* Handle linking */ },
+                    onClick = { navController?.navigate("SuccessPopup2") },
                     modifier = Modifier.fillMaxWidth() ,colors = ButtonDefaults.buttonColors(containerColor = Color.Black)
 
                 ) {
@@ -668,10 +723,11 @@ fun SignUpScreen() {
         @Preview(showBackground = true,showSystemUi = true)
         @Composable
         fun LinkBankAccountScreenPreview() {
+
             LinkBankAccountScreen()
         }
         @Composable
-        fun SuccessPopup2() {
+        fun SuccessPopup2(navController: NavController? = null) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -695,7 +751,7 @@ fun SignUpScreen() {
                 )
 
                 Button(
-                    onClick = { /* Navigate to dashboard */ },
+                    onClick = { navController?.navigate("Subscription Plans") },
                     modifier = Modifier
                         .padding(16.dp),colors = ButtonDefaults.buttonColors(containerColor = Color.Black)
 
@@ -711,11 +767,12 @@ fun SignUpScreen() {
         @Preview(showBackground = true, showSystemUi = true)
         @Composable
         fun PreviewSuccessPopup2() {
+
             SuccessPopup2()
         }
 
         @Composable
-        fun MoodTrackerScreen() {
+        fun MoodTrackerScreen(navController : NavController? = null) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -787,11 +844,12 @@ fun SignUpScreen() {
 @Preview(showBackground = true)
         @Composable
         fun PreviewMoodTrackerScreen() {
+
             MoodTrackerScreen()
         }
 
 @Composable
-fun SubscriptionPlansScreen() {
+fun SubscriptionPlansScreen(navController : NavController? = null) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -833,7 +891,7 @@ fun SubscriptionPlansScreen() {
             selected = false
         )
 
-        Button(onClick = {}, modifier = Modifier.fillMaxWidth()
+        Button(onClick = {navController?.navigate("Dashboard")}, modifier = Modifier.fillMaxWidth()
             .padding(top = 16.dp), colors = ButtonDefaults.buttonColors(containerColor = Color.Black
         )) {
             Text("Get Started",color = Color(0xFFFFD700), fontSize = 20.sp,fontWeight = FontWeight.Bold)
@@ -864,16 +922,18 @@ fun PlanCard(title: String, price: String, description: String, selected: Boolea
         }
     }
 }
+
 @Preview(showBackground = true)
 @Composable
 fun SubscriptionPlansScreenPreview() {
+
     SubscriptionPlansScreen()
 }
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DashboardScreen() {
+fun DashboardScreen(navController : NavController?  = null) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -984,6 +1044,7 @@ fun DashboardScreen() {
             }
         }
     }
+
     Button(
         onClick = {}, modifier = Modifier.fillMaxWidth()
             .padding(top = 16.dp), colors = ButtonDefaults.buttonColors(
@@ -998,15 +1059,7 @@ fun DashboardScreen() {
         )
     }
 
-    @Preview(showBackground = true, showSystemUi = true)
-    @Composable
-    fun DashboardPreview() {
-        FinPulseTheme {
-            DashboardScreen()
-        }
-    }
-
-    @Composable
+ @Composable
     fun ProfileScreen() {
         Column(
             modifier = Modifier
@@ -1015,48 +1068,43 @@ fun DashboardScreen() {
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            // Profile Image
             Image(
                 painter = painterResource(id = R.drawable.profile),
                 contentDescription = "Profile Picture",
                 modifier = Modifier
-                    .size(100.dp)
+                    .size(300.dp)
                     .clip(CircleShape)
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
+            // User Info
             Text(
-                text = "Suraat Smith",
-                style = MaterialTheme.typography.headlineSmall,
-                fontWeight = FontWeight.Bold
+                text = "Suraat Smith", fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color(0xFF008080),
+                modifier = Modifier.padding(bottom = 16.dp)
             )
 
             Text(
-                text = "robert.smith@email.com",
-                style = MaterialTheme.typography.bodyMedium,
-                color = Color.Gray
+                text = "robert.smith@email.com", fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color(0xFF008080),
+                modifier = Modifier.padding(bottom = 16.dp)
             )
 
             Spacer(modifier = Modifier.height(24.dp))
 
+            // Action Buttons
             val buttonList = listOf(
-                "Edit Profile",
-                "Personal Details",
-                "Accounts",
-                "Budget",
-                "Settings",
-                "Log Out"
+                "Edit Profile", "Personal Details", "Accounts", "Budget", "Settings", "Log Out"
             )
 
             buttonList.forEach { label ->
-                OutlinedButton(
+                Button(
                     onClick = { /* Handle click */ },
-                    modifier = Modifier
-                        .fillMaxWidth(0.8f)
-                        .height(48.dp),
-                    colors = ButtonDefaults.outlinedButtonColors(
-                        contentColor = MaterialTheme.colorScheme.primary
-                    )
+                    modifier = Modifier.fillMaxWidth(0.8f)
                 ) {
                     Text(text = label)
                 }
@@ -1064,11 +1112,285 @@ fun DashboardScreen() {
             }
         }
     }
+}
 
-    @Preview(showBackground = true)
-    @Composable
-    fun ProfileScreenPreview() {
-        FinPulseTheme {
-            ProfileScreen()}
+@Preview(showBackground = true,showSystemUi = true)
+@Composable
+fun DashboardPreview() {
+
+    DashboardScreen()
+}
+@Composable
+fun ProfileScreen() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.profile),
+            contentDescription = "Profile Image",
+            modifier = Modifier
+                .size(160.dp)
+                .clip(CircleShape)
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(
+            text = "Suraat Smith",
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color(0xFF008080),
+            modifier = Modifier.padding(bottom = 16.dp)
+        )
+
+        Text(
+            text = "suraat.smith@email.com",
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color(0xFF008080),
+            modifier = Modifier.padding(bottom = 16.dp)
+        )
+        Box(
+            modifier = Modifier.fillMaxSize()
+            //.padding(innerPadding)
+
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                // First row of cards
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    EditProfileCard()
+                    PersonalDetailsCard()
+
+                }
+
+
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                // Second row of cards
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    SettingsCard()
+                    AccountsCard()
+                }
+            }
+
         }
     }
+        Button(
+            onClick = {}, modifier = Modifier.fillMaxWidth()
+                .padding(top = 16.dp), colors = ButtonDefaults.buttonColors(
+                containerColor = Color.Black
+            )
+        ) {
+            Text(
+                "Log out",
+                color = Color(0xFFFFD700),
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
+            )
+
+    }
+}
+
+@Preview(showBackground = true,showSystemUi = true)
+@Composable
+fun ProfileScreenPreview() {
+    ProfileScreen()
+}
+
+
+@Composable
+fun ProfileCard(
+    modifier: Modifier = Modifier,
+    elevation: Dp = 6.dp,
+    icon: ImageVector? = null,
+    iconTint: Color = Color(0xFF460A40),
+    title: String,
+    content: @Composable (() -> Unit)? = null
+) {
+    ElevatedCard(
+        elevation = CardDefaults.cardElevation(defaultElevation = elevation),
+        shape = RoundedCornerShape(16.dp),
+        modifier = modifier
+            .padding(8.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            // Icon section (only shown if icon is provided)
+            icon?.let {
+                Icon(
+                    imageVector = it,
+                    contentDescription = null,
+                    modifier = Modifier.size(48.dp),
+                    tint = Color(0xFF460A40)
+                )
+                Spacer(modifier = Modifier.padding(8.dp))
+            }
+
+            // Content section (either default or custom)
+            if (content == null) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    // Title
+                    Text(
+                        text = title,
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center
+                    )
+
+
+                }
+            }
+        }
+    }
+}
+
+    @Composable
+    fun EditProfileCard() {
+        ProfileCard(
+            modifier = Modifier.size(160.dp),
+            icon = Icons.Filled.Edit,
+            title = "Edit Profile",
+        )
+
+    }
+
+
+    @Composable
+    fun PersonalDetailsCard() {
+        ProfileCard(
+            modifier = Modifier.size(160.dp),
+            icon = Icons.Filled.Person,
+            title = "Personal Details",
+        )
+
+    }
+
+    @Composable
+    fun SettingsCard() {
+        ProfileCard(
+            modifier = Modifier.size(160.dp),
+            icon = Icons.Filled.Settings,
+            title = "Settings",
+        )
+
+    }
+
+@Composable
+fun AccountsCard() {
+    ProfileCard(
+        modifier = Modifier.size(160.dp),
+        icon = Icons.Filled.AccountBox,
+        title = "Accounts",
+    )
+
+}
+@Composable
+fun SettingsScreen() {
+    var notificationsEnabled by remember { mutableStateOf(true) }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
+            .padding(24.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        // Top Bar
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Icon(Icons.Default.Menu, contentDescription = "Menu")
+            Spacer(modifier = Modifier.weight(1f))
+            Text("FINPULSE", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+            Spacer(modifier = Modifier.weight(1f))
+        }
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        Text("Settings", fontSize = 28.sp, fontWeight = FontWeight.Bold)
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color(0xFFF7F7F7), RoundedCornerShape(12.dp))
+        ) {
+            SettingsItem(icon = Icons.Default.Person, title = "Profile")
+            SettingsItem(icon = Icons.Default.Notifications, title = "Notifications") {
+                Switch(
+                    checked = notificationsEnabled,
+                    onCheckedChange = { notificationsEnabled = it },
+                    modifier = Modifier.padding(end = 16.dp)
+                )
+            }
+            SettingsItem(icon = Icons.Default.Lock, title = "Security")
+            SettingsItem(icon = Icons.Default.Person, title = "Account")
+          SettingsItem(icon = Icons.Default.Menu ,title = "Appearance")
+            //SettingsItem( icon = Icons.Default.Encrypted,title = "Privacy")
+            SettingsItem(icon = Icons.Default.Info, title = "About")
+        }
+
+        Spacer(modifier = Modifier.height(40.dp))
+
+        Text(
+            text = "Log Out",
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Medium,
+            color = Color(0xFF0D0D0D),
+            modifier = Modifier.clickable { }.padding(8.dp)
+        )
+    }
+}
+
+@Composable
+fun SettingsItem(
+    icon: ImageVector,
+    title: String,
+    trailingContent: (@Composable () -> Unit)? = null
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { }
+            .padding(vertical = 16.dp, horizontal = 16.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(icon, contentDescription = title, modifier = Modifier.size(24.dp))
+        Spacer(modifier = Modifier.width(16.dp))
+        Text(title, fontSize = 18.sp, modifier = Modifier.weight(1f))
+        trailingContent?.invoke() ?: Icon(Icons.Default.PlayArrow, contentDescription = "Go")
+    }
+
+}
+
+@Preview(showBackground = true)
+@Composable
+fun SettingsScreenPreview() {
+    SettingsScreen()
+}
+
+
+
